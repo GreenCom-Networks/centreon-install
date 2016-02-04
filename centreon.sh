@@ -104,14 +104,21 @@ function php_install () {
 echo '
 ======================================================================
 
-                  Install PHP, pear and apache
+                  Install PHP 7.0, pear and apache
 
 ======================================================================
 '
+wget -qO - https://www.dotdeb.org/dotdeb.gpg | apt-key add -
+
+echo 'deb http://packages.dotdeb.org jessie all
+deb-src http://packages.dotdeb.org jessie all' > /etc/apt/sources.list.d/dotdeb-php70.list
+apt-get update
+
 DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes bsd-mailx \
- apache2 php5-mysql rrdtool librrds-perl tofrodos php5 php-pear php5-ldap php5-snmp \
- php5-gd libconfig-inifiles-perl libcrypt-des-perl libdigest-hmac-perl libgd-gd2-perl \
- snmp snmpd snmp-mibs-downloader sudo libdigest-sha-perl php5-sqlite php5-intl
+ apache2 rrdtool librrds-perl tofrodos libconfig-inifiles-perl libcrypt-des-perl \
+ libdigest-hmac-perl libgd-gd2-perl snmp snmpd snmp-mibs-downloader sudo libdigest-sha-perl \
+ libapache2-mod-php7.0 php7.0 php7.0-cli php7.0-common php7.0-gd php7.0-intl \
+ php7.0-json php7.0-ldap php7.0-mysql php7.0-readline php7.0-snmp php7.0-sqlite3
 
 # Cleanup to prevent space full on /var
 apt-get clean
@@ -124,7 +131,7 @@ cd ${DL_DIR}
 /usr/bin/pear install Archive_Tar Archive_Zip-beta Auth_SASL Console_Getopt DB DB_DataObject DB_DataObject_FormBuilder Date HTML_Common HTML_QuickForm HTTP_Request Log MDB2 Net_Ping Net_SMTP Net_Socket Net_Traceroute-alpha Net_URL SOAP-beta Structures_Graph Validate-beta
 /usr/bin/pear upgrade-all
 cd -
-sed -i 's/;date.timezone =/date.timezone = Europe\/Paris/' /etc/php5/apache2/php.ini
+sed -i 's/;date.timezone =/date.timezone = Europe\/Paris/' /etc/php/7.0/apache2/php.ini
 
 }
 
